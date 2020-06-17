@@ -17,7 +17,7 @@ def verify_data():
     data = breeds_col.find({}, {'_id': False})
 
     # List das breeds para inserir no banco
-    # Model: Origem, Temperamento, Descrição, 3 imagens
+    # Model: Id_name, Origem, Temperamento, Descrição, 3 imagens
     breeds_list = []
 
     if data.count() == 0:
@@ -30,6 +30,8 @@ def verify_data():
         for r in req.json():
             temperament_list = r['temperament'].lower().split(", ")
             breed = {
+                'id_name': r['id'],
+                'name': r['name'],
                 'origin': r['origin'],
                 'temperament': temperament_list,
                 'description': r['description']
@@ -40,7 +42,7 @@ def verify_data():
         breeds_col.insert_many(breeds_list)
         print("Inserido com sucesso!")
         return
-    print("Collection cheia")
+    print("Database existe, collection contém dados...")
     return
 
 class HelloHandler(DefaultHandler):
@@ -51,27 +53,21 @@ class BreedsHandler(DefaultHandler):
     def get(self, id_name):
         id_name_low = id_name.lower()
         # Lista todas as raças, mas não insere no banco ainda
-        breeds = {}
-        items = []
+        breeds_list = []
 
+        # Se não existir um id_name ele traz todas as informações do banco
         if id_name_low == "":
-            print("Não deu " + id_name_low)
-            req = requests.get(config.API + "breeds")
-            for r in req.json():
-                items.append(r)
-            breeds = items
+            datas = breeds_col.find({}, {'_id': False})
+            for data in datas:
+                breeds_list.append(data)
+            self.ResponseWithJson(1, breeds_list)
+            return
         else:
-            print(id_name_low)
-            req = requests.get(config.API + "breeds/search?q=" + id_name_low)
-            for r in req.json():
-                items.append(r)
-            breeds = items
-        
-        if breeds is not {}:
-            self.ResponseWithJson(1,breeds)
-            breeds = {}
-        else:
-            self.ResponseWithJson(0,breeds)
+            datas = breeds_col.find({'id_name': id_name_low}, {'_id': False})
+            for data in datas:
+                breeds_list.append(data)
+            self.ResponseWithJson(1, breeds_list)
+            return
 
 class BreedsOriginHandler(DefaultHandler):
     def get(self, origin_name):
