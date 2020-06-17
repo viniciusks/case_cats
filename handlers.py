@@ -57,12 +57,14 @@ class BreedsHandler(DefaultHandler):
 
         # Se não existir um id_name ele traz todas as informações do banco
         if id_name_low == "":
+            # Procura todas as raças
             datas = breeds_col.find({}, {'_id': False})
             for data in datas:
                 breeds_list.append(data)
             self.ResponseWithJson(1, breeds_list)
             return
         else:
+            # Procura apenas 1 raça
             datas = breeds_col.find({'id_name': id_name_low}, {'_id': False})
             for data in datas:
                 breeds_list.append(data)
