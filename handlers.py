@@ -30,11 +30,11 @@ def verify_data():
         for r in req.json():
             temperament_list = r['temperament'].lower().split(", ")
             breed = {
-                'id_name': r['id'],
-                'name': r['name'],
-                'origin': r['origin'],
+                'id_name': r['id'].lower(),
+                'name': r['name'].lower(),
+                'origin': r['origin'].lower(),
                 'temperament': temperament_list,
-                'description': r['description']
+                'description': r['description'].lower()
             }
             breeds_list.append(breed)
         print("Dados solicitados com sucesso...")
@@ -52,7 +52,6 @@ class HelloHandler(DefaultHandler):
 class BreedsHandler(DefaultHandler):
     def get(self, id_name):
         id_name_low = id_name.lower()
-        # Lista todas as raças, mas não insere no banco ainda
         breeds_list = []
 
         # Se não existir um id_name ele traz todas as informações do banco
@@ -61,59 +60,87 @@ class BreedsHandler(DefaultHandler):
             datas = breeds_col.find({}, {'_id': False})
             for data in datas:
                 breeds_list.append(data)
-            self.ResponseWithJson(1, breeds_list)
-            return
+            
+            # Caso não exista gatos no banco de dados
+            if breeds_list == []:
+                info = {
+                    "msg": "Não existem gatos."
+                }
+                breeds_list.append(info)
         else:
             # Procura apenas 1 raça
             datas = breeds_col.find({'id_name': id_name_low}, {'_id': False})
             for data in datas:
                 breeds_list.append(data)
-            self.ResponseWithJson(1, breeds_list)
-            return
+
+            # Caso não ache gatos da raça passada
+            if breeds_list == []:
+                info = {
+                    "msg": "Não existe essa raça de gato."
+                }
+                breeds_list.append(info)
+        
+        self.ResponseWithJson(1, breeds_list)
+        return
 
 class BreedsOriginHandler(DefaultHandler):
     def get(self, origin_name):
         origem_name_low = origin_name.lower()
-        # Lista todas as raças de uma certa ORIGEM, mas não insere no banco ainda
-        breeds = {}
-        items = []
+        breeds_list = []
 
+        # Verifica se tem um valor dentro de origem_name_low
         if origem_name_low == "":
-            # PRINT MENSAGEM ERRO
-            print("[ERROR] - Coloque uma origem")
-            self.ResponseWithJson(0, breeds)
+            print("[ERROR] - Argumento de origem faltando.")
+            error = {
+                "error_msg": "Coloque uma origem!"
+            }
+            breeds_list.append(error)
+            self.ResponseWithJson(0, breeds_list)
             return
         else:
-            print(origem_name_low)
-            req = requests.get(config.API + "breeds")
-            for r in req.json():
-                if r['origin'].lower() == origem_name_low:
-                    items.append(r)
-            breeds = items
-            self.ResponseWithJson(1, breeds)
+            # Traz apenas os gatos da origem passada
+            datas = breeds_col.find({'origin': origem_name_low}, {'_id': False})
+            for data in datas:
+                breeds_list.append(data)
+
+            # Caso não encontre gatos com a origem passada
+            if breeds_list == []:
+                info = {
+                    "msg": "Não foi encontrado gatos com essa origem."
+                }
+                breeds_list.append(info)
+
+            self.ResponseWithJson(1, breeds_list)
             return
 
 class BreedsTemperamentHandler(DefaultHandler):
     def get(self, temperament):
         temperament_low = temperament.lower()
-        # Lista todas as raças de uma certa ORIGEM, mas não insere no banco ainda
-        breeds = {}
-        items = []
+        breeds_list = []
 
+        # Verifica se tem valor dentro de temperament_low
         if temperament_low == "":
-            # PRINT MENSAGEM ERRO
-            print("[ERROR] - Coloque uma origem")
-            self.ResponseWithJson(0, breeds)
+            print("[ERROR] - Argumento de temperamento faltando.")
+            error = {
+                "error_msg": "Coloque um temperamento!"
+            }
+            breeds_list.append(error)
+            self.ResponseWithJson(0, breeds_list)
             return
         else:
-            print(temperament_low)
-            req = requests.get(config.API + "breeds")
-            for r in req.json():
-                list_temperament = r['temperament'].lower().split(", ")
-                for l in list_temperament:
-                    if l == temperament_low:
-                        items.append(r)
+            # Traz todos os dados e procura dentro do array os temperamentos equivalentes
+            datas = breeds_col.find({}, {'_id': False})
+            for data in datas:
+                for t in data['temperament']:
+                    if temperament_low == t:
+                        breeds_list.append(data)
+            
+            # Caso não encontre o temperamento passado
+            if breeds_list == []:
+                info = {
+                    "msg": "Não foi encontrado gatos com esse temperamento."
+                }
+                breeds_list.append(info)
 
-            breeds = items
-            self.ResponseWithJson(1, breeds)
+            self.ResponseWithJson(1, breeds_list)
             return
