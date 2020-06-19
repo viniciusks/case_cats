@@ -11,6 +11,7 @@ db = client[config.APP_SETTINGS['database']]
 
 # Collection
 breeds_col = db.breeds
+categories_image_col = db.categories_image
 
 # Função para fazer a carga inicial no banco
 def verify_data():
@@ -28,13 +29,26 @@ def verify_data():
         temperament_list = []
 
         for r in req.json():
+
+            # Pega 3 imagens para cada raça
+            # Por conta desta parte pode levar cerca de 3 minutos a primeira execução
+            cont = 0
+            images = []
+            while cont < 3:
+                print(cont)
+                img = requests.get(config.API + "images/search?breed_id=" + r['id'].lower())
+                img_json = img.json()
+                images.append(img_json[0]['url'])
+                cont += 1
+
             temperament_list = r['temperament'].lower().split(", ")
             breed = {
                 'id_name': r['id'].lower(),
                 'name': r['name'].lower(),
                 'origin': r['origin'].lower(),
                 'temperament': temperament_list,
-                'description': r['description'].lower()
+                'description': r['description'].lower(),
+                'images': images
             }
             breeds_list.append(breed)
         print("Dados solicitados com sucesso...")
@@ -97,21 +111,21 @@ class BreedsOriginHandler(DefaultHandler):
             breeds_list.append(error)
             self.ResponseWithJson(0, breeds_list)
             return
-        else:
-            # Traz apenas os gatos da origem passada
-            datas = breeds_col.find({'origin': origem_name_low}, {'_id': False})
-            for data in datas:
-                breeds_list.append(data)
+        
+        # Traz apenas os gatos da origem passada
+        datas = breeds_col.find({'origin': origem_name_low}, {'_id': False})
+        for data in datas:
+            breeds_list.append(data)
 
-            # Caso não encontre gatos com a origem passada
-            if breeds_list == []:
-                info = {
-                    "msg": "Não foi encontrado gatos com essa origem."
-                }
-                breeds_list.append(info)
+        # Caso não encontre gatos com a origem passada
+        if breeds_list == []:
+            info = {
+                "msg": "Não foi encontrado gatos com essa origem."
+            }
+            breeds_list.append(info)
 
-            self.ResponseWithJson(1, breeds_list)
-            return
+        self.ResponseWithJson(1, breeds_list)
+        return
 
 class BreedsTemperamentHandler(DefaultHandler):
     def get(self, temperament):
@@ -127,20 +141,51 @@ class BreedsTemperamentHandler(DefaultHandler):
             breeds_list.append(error)
             self.ResponseWithJson(0, breeds_list)
             return
-        else:
-            # Traz todos os dados e procura dentro do array os temperamentos equivalentes
-            datas = breeds_col.find({}, {'_id': False})
-            for data in datas:
-                for t in data['temperament']:
-                    if temperament_low == t:
-                        breeds_list.append(data)
-            
-            # Caso não encontre o temperamento passado
-            if breeds_list == []:
-                info = {
-                    "msg": "Não foi encontrado gatos com esse temperamento."
-                }
-                breeds_list.append(info)
+        
+        # Traz todos os dados e procura dentro do array os temperamentos equivalentes
+        datas = breeds_col.find({}, {'_id': False})
+        for data in datas:
+            for t in data['temperament']:
+                if temperament_low == t:
+                    breeds_list.append(data)
+        
+        # Caso não encontre o temperamento passado
+        if breeds_list == []:
+            info = {
+                "msg": "Não foi encontrado gatos com esse temperamento."
+            }
+            breeds_list.append(info)
 
-            self.ResponseWithJson(1, breeds_list)
+        self.ResponseWithJson(1, breeds_list)
+        return
+
+class CatsImagesHandler(DefaultHandler):
+    def post(self, category_id):
+        # Certifica que tudo estará minúsculo para a pesquisa
+        category_id_low = category_id.lower()
+
+        if category_id_low == "":
+            print("[ERROR] - Argumento de category_id faltando.")
+            error = {
+                "error_msg": "Coloque uma categoria!"
+            }
+
+            self.ResponseWithJson(0, error)
             return
+
+        # Requisição feita na api cat
+        img = requests.get(config.API + "images/search?&category_ids=" + category_id_low)
+        img_json = img.json()
+
+        # Objeto para inserir dentro do MongoDB
+        categories_image = {
+            "name": img_json[0]['categories'][0]['name'],
+            "url": img_json[0]['url']
+        }
+
+        # Momento da inserção
+        categories_image_col.insert_one(categories_image)
+
+        # Response em formato JSON
+        self.ResponseWithJson(1,categories_image)
+        return

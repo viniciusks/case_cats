@@ -27,6 +27,7 @@ def make_app():
         (r"/breeds/(.*)", handlers.BreedsHandler),
         (r"/breeds-origin/(.*)", handlers.BreedsOriginHandler),
         (r"/breeds-temperament/(.*)", handlers.BreedsTemperamentHandler),
+        (r"/cats-category-images/(.*)", handlers.CatsImagesHandler),
     ]
     return Application(paths, debug=True)
 
