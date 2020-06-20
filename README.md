@@ -106,7 +106,7 @@ Para rodar localmente basta ou rodar os comandos *docker run* ou rodar o *docker
 
     Após a execução dessas desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
 
-  * Rodando o *docker-compose.yml*:
+  * Rodando com *docker-compose.yml*:
     1. Rodar o comando do *docker-compose.yml* para subir os conteineres de MongoDB e a API Rest case_cats
       > docker-compose -f docker-compose.yml -d up
       > OSB: A flag "-d" é o detached mode, quando o container inicia neste modo ele libera o terminal enquanto o processo fica rodando em background.
