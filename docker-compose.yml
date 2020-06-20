@@ -5,7 +5,7 @@ mongo:
         - 27017:27017
     volumes:
         - C:\www\Data\MongoDB:/data/db # Caminho para Windows
-        # - /home/<user>/www/mongo/data:/data/db # Caminho para Linux
+        # - /home/<user>/www/mongo/data:/data/db # Caminho exemplo para Linux
 
 api:
     image: viniciusks13/case_cats:1.0.1
