@@ -59,13 +59,13 @@ Exemplo de retorno com falha:
 Ela tem 5 endpoint que entre eles são: 
   * **/breeds/** - GET
     > Retorna a lista completa de todas as raças de gatos.
-  * **/breeds/<id_name_breed>** - GET
+  * **/breeds/<-id_name_breed->** - GET
     > Retorna informações de apenas uma raça conforme o id_name_breed passado. Exemplo de id_name_breed: *"abys, sib"*.
-  * **/breeds-origin/<origin>** - GET
+  * **/breeds-origin/<-origin->** - GET
     > Retorna raças que sejam da origem passada. Exemplo de origem: *"Russia", "Egypt", "Greece", "United State"*.
-  * **/breeds-temperament/<temperament>** - GET
+  * **/breeds-temperament/<-temperament->** - GET
     > Retorna raças que tenham o temperamento informado. Exemplos de temperamento: *"active", "energetic", "sweet", "independent", "intelligent", "gentle"*.
-  * **/cats-category-images/<category_id>** - POST
+  * **/cats-category-images/<-category_id->** - POST
     > Conforme o category_id passado, pesquisa a imagem e insere no banco o endereço da mesma.
     > * category_id = 1 -> Hats cats
     > * category_id = 4 -> Sunglasses cats
