@@ -84,7 +84,7 @@ Ou rodar o **_docker-compose.yml_**.
 O **MongoDB** está rodando na porta *27017*.
 
 A aplicação *case_cats* está rodando em container Docker também. A imagem da aplicação já está no DockerHub, com o nome de **_viniciusks13/case_cats_**, tem tags e a utilizada foi a **_1.0.1_**.
-O Dockerfile está junto no repositório Git no GitHub para análise da construção, mas ela também se encontra no DockerHub para a execução de um container.
+O Dockerfile está junto no repositório Git no GitHub para análise da construção, mas a imagem também se encontra no DockerHub para a execução de um container.
 Para iniciar o container dele basta rodar o comando abaixo:
 
   > docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.1
@@ -118,5 +118,5 @@ Para rodar localmente basta ou rodar os comandos *docker run* ou rodar o *docker
 
       * OSB: A flag "-d" é o detached mode, quando o container inicia neste modo ele libera o terminal enquanto o processo fica rodando em background.
      
-    O docker-compose.yml contém os dois conteiners configurados dentro dele.
+    O docker-compose.yml contém os dois conteineres configurados dentro dele.
     Após a execução desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
