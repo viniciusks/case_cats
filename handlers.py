@@ -100,9 +100,11 @@ class BreedsHandler(DefaultHandler):
             if breeds_list == []:
                 logging_cats.logging_cats(2, "Não existe essa raça de gato.")
                 info = {
-                    "msg": "Não existe essa raça de gato."
+                    "error_msg": "Não existe essa raça de gato."
                 }
                 breeds_list.append(info)
+                self.ResponseWithJson(0, breeds_list)
+                return
         
         self.ResponseWithJson(1, breeds_list)
         return
