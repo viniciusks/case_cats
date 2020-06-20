@@ -1,5 +1,6 @@
 import requests
 import config
+import logging_cats
 from pymongo import MongoClient
 from main import DefaultHandler
 
@@ -22,8 +23,8 @@ def verify_data():
     breeds_list = []
 
     if data.count() == 0:
-        print("Collection vazia")
-        print("Requisitando dados de CATSAPI...")
+        logging_cats.logging_cats(1, "Collection vazia")
+        logging_cats.logging_cats(1, "Requisitando dados")
         req = requests.get(config.API + "breeds")
 
         temperament_list = []
@@ -34,13 +35,14 @@ def verify_data():
             # Por conta desta parte pode levar cerca de 3 minutos a primeira execução
             cont = 0
             images = []
-            print("Pegando imagens...")
+            logging_cats.logging_cats(1, "Pegando imagens")
             while cont < 3:
                 img = requests.get(config.API + "images/search?breed_id=" + r['id'].lower())
                 img_json = img.json()
                 images.append(img_json[0]['url'])
                 cont += 1
-            print("Carregamento de imagens concluída...")
+
+            logging_cats.logging_cats(1, "Carregamento de imagens concluída")
 
             temperament_list = r['temperament'].lower().split(", ")
             breed = {
@@ -52,12 +54,13 @@ def verify_data():
                 'images': images
             }
             breeds_list.append(breed)
-        print("Dados solicitados com sucesso!")
-        print("Inserido no banco...")
+        logging_cats.logging_cats(1, "Dados solicitados com sucesso!")
+        logging_cats.logging_cats(1, "Inserindo no banco")
         breeds_col.insert_many(breeds_list)
-        print("Inserido com sucesso!")
+        logging_cats.logging_cats(1, "Inserido com sucesso!")
         return
-    print("Database existe, collection contém dados...")
+    logging_cats.logging_cats(1, "Database já existe")
+    logging_cats.logging_cats(1, "Collection já existe")
     return
 
 class HelloHandler(DefaultHandler):

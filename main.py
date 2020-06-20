@@ -29,10 +29,10 @@ def make_app():
         (r"/breeds-temperament/(.*)", handlers.BreedsTemperamentHandler),
         (r"/cats-category-images/(.*)", handlers.CatsImagesHandler),
     ]
-    return Application(paths)
+    return Application(paths, debug=True)
 
 if __name__ == "__main__":
-    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     app = make_app()
     app.listen(8888)
     IOLoop.current().start()
