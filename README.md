@@ -75,14 +75,18 @@ Foi utilizado Docker para montar a Infraestrutura de toda aplicação. Tudo est�
 
 O Banco de dados utilizado foi o **MongoDB**, a imagem do container foi usada a oficial no repositóio Dockerhub.
 Para iniciar o container dele basta rodar o comando abaixo:
+
   > docker run -d -p 27017:27017 --name mongo mongo
+
 Ou rodar o **_docker-compose.yml_**.
 O **MongoDB** está rodando na porta *27017*.
 
 A aplicação *case_cats* está rodando em container Docker também. A imagem da aplicação já está no DockerHub, com o nome de *viniciusks13/case_cats*, tem tags e a utilizada foi a *1.0.1*.
 O Dockerfile está junto no repositório Git no GitHub para análise da construção, mas ela também se encontra no DockerHub para a execução de um container.
 Para iniciar o container dele basta rodar o comando abaixo:
+
   > docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.0
+
 Ou rodar o **_docker-compose.yml_**.
 A aplicação **case_cats** está rodando na porta *8888*.
 
