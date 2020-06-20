@@ -3,8 +3,11 @@ mongo:
     restart: always
     ports:
         - 27017:27017
+    volumes:
+        - C:\www\Data\MongoDB:/data/db # Caminho para Windows
+        # - /home/<user>/www/mongo/data:/data/db # Caminho para Linux
 
-case_cats_api:
+api:
     image: viniciusks/case_cats:1.0.0
     ports:
         - 8888:8888
