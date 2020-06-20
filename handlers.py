@@ -34,12 +34,13 @@ def verify_data():
             # Por conta desta parte pode levar cerca de 3 minutos a primeira execução
             cont = 0
             images = []
+            print("Pegando imagens...")
             while cont < 3:
-                print(cont)
                 img = requests.get(config.API + "images/search?breed_id=" + r['id'].lower())
                 img_json = img.json()
                 images.append(img_json[0]['url'])
                 cont += 1
+            print("Carregamento de imagens concluída...")
 
             temperament_list = r['temperament'].lower().split(", ")
             breed = {
@@ -51,7 +52,7 @@ def verify_data():
                 'images': images
             }
             breeds_list.append(breed)
-        print("Dados solicitados com sucesso...")
+        print("Dados solicitados com sucesso!")
         print("Inserido no banco...")
         breeds_col.insert_many(breeds_list)
         print("Inserido com sucesso!")
