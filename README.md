@@ -67,8 +67,8 @@ Ela tem 5 endpoint que entre eles são:
     > Retorna raças que tenham o temperamento informado. Exemplos de temperamento: *"active", "energetic", "sweet", "independent", "intelligent", "gentle"*.
   * **/cats-category-images/<category_id>** - POST
     > Conforme o category_id passado, pesquisa a imagem e insere no banco o endereço da mesma.
-     * category_id = 1 -> Hats cats
-     * category_id = 4 -> Sunglasses cats
+    > * category_id = 1 -> Hats cats
+    > * category_id = 4 -> Sunglasses cats
   
 
 docker run -d -p 27017:27017 -e AUTH=no --name mongo mongo
