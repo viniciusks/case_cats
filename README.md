@@ -93,3 +93,23 @@ A aplicação **case_cats** está rodando na porta *8888*.
 É recomendado levantar os containers através do **_docker-compose.yml_**.
 
 ## Como rodar localmente
+Para rodar localmente basta ou rodar os comandos *docker run* ou rodar o *docker-compose.yml*
+
+ * Rodando com *docker run*:
+   1. Rodar o comando para subir o MongoDB
+     
+     > docker run -d -p 27017:27017 --name mongo mongo
+
+   2. Rodar o comando para subir a API Rest case_cats
+
+     > docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.1
+
+     Após a execução dessas desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
+
+  * Rodando o *docker-compose.yml*:
+    1. Rodar o comando do *docker-compose.yml* para subir os conteineres de MongoDB e a API Rest case_cats
+      > docker-compose -f docker-compose.yml -d up
+      > OSB: A flag "-d" é o detached mode, quando o container inicia neste modo ele libera o terminal enquanto o processo fica rodando em background.
+     
+     O docker-compose.yml contém os dois conteiners configurados dentro dele.
+     Após a execução dessas desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
