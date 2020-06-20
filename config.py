@@ -2,7 +2,7 @@ API = "https://api.thecatapi.com/v1/"
 
 APP_SETTINGS = {
     "mongodb": {
-        "host" : "mongo_1",
+        "host" : "mongo",
         "port" : 27017
     },
     "database" : "case_cats"
