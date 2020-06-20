@@ -1,6 +1,9 @@
 # Imagem que a minha será baseada
 FROM python:3.7
 
+# Definindo usuário
+USER root
+
 # Exposição da porta do serviço
 EXPOSE 8888
 
