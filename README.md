@@ -85,11 +85,11 @@ A aplicação *case_cats* está rodando em container Docker também. A imagem da
 O Dockerfile está junto no repositório Git no GitHub para análise da construção, mas ela também se encontra no DockerHub para a execução de um container.
 Para iniciar o container dele basta rodar o comando abaixo:
 
-  > docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.0
+  > docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.1
 
 Ou rodar o **_docker-compose.yml_**.
 A aplicação **case_cats** está rodando na porta *8888*.
 
 É recomendado levantar os containers através do **_docker-compose.yml_**.
 
-# Como rodar localmente
+## Como rodar localmente
