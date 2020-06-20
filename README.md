@@ -15,7 +15,7 @@ Roda na porta **8888**.
 
 Existe um padrão de retorno onde tem o "**return_code**" e o "**data**". 
 O "**return_code**" pode retornar 2 valores *0* ou *1*, onde *0* serve para indicar que a API retornou com erro e *1* que serve para indicar o sucesso do retorno.
-O campo "**data**" é um array dentro do JSON de retorno que, se tiver os dados no banco, a API irá retorná-los para dentro deste campo. Caso ocorra de não haver dados, a API irá retornar uma mensagem dentro deste mesmo campo informando o motivo da falha.
+O campo "**data**" é um array dentro do JSON de retorno que, se tiver os dados no banco, a API irá retorná-los para dentro deste campo. Caso ocorra a inexistência de dados, a API retornará com uma notificação dentro deste mesmo campo informando o motivo da falha.
 
 Exemplo de retorno com sucesso:
 ```
@@ -84,8 +84,8 @@ Ou rodar o **_docker-compose.yml_**.
 O **MongoDB** está rodando na porta *27017*.
 
 A aplicação *case_cats* está rodando em container Docker também. A imagem da aplicação já está no DockerHub, com o nome de **_viniciusks13/case_cats_**, tem tags e a utilizada foi a **_1.0.1_**.
-O Dockerfile está junto no repositório Git no GitHub para análise da construção, mas a imagem também se encontra no DockerHub para a execução de um container.
-Para iniciar o container dele basta rodar o comando abaixo:
+O Dockerfile está junto no repositório Git no GitHub para análise da construção, mas a imagem também encontra-se no DockerHub para a execução de um container.
+Para iniciar esta aplicação basta rodar o comando abaixo:
 
   > docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.1
 
@@ -108,15 +108,15 @@ Para rodar localmente basta ou rodar os comandos *docker run* ou rodar o *docker
      docker run -d -p 8888:8888 --link=mongo --name case_cats_api viniciusks13/case_cats:1.0.1
      ```
 
-    Após a execução dessas desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
+    Após a execução desses comandos o ambiente estará funcional, a primeira execução para acesso pode levar em torno de 2-3 minutos devido a carga inicial de dados no MongoDB.
 
   * Rodando com *docker-compose.yml*:
-    1. Rodar o comando do *docker-compose.yml* para subir os conteineres de MongoDB e a API Rest case_cats
+    1. Rodar o comando do *docker-compose.yml* para subir os conteiners de MongoDB e a API Rest case_cats
       ```
        docker-compose -f docker-compose.yml -d up
       ```
 
       * OSB: A flag "-d" é o detached mode, quando o container inicia neste modo ele libera o terminal enquanto o processo fica rodando em background.
      
-    O docker-compose.yml contém os dois conteineres configurados dentro dele.
-    Após a execução desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
+    O docker-compose.yml contém os dois conteiners configurados.
+    Após a execução desses comandos o ambiente estará funcional, a primeira execução para acesso pode levar em torno de 2-3 minutos devido a carga inicial de dados no MongoDB.
