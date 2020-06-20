@@ -119,4 +119,4 @@ Para rodar localmente basta ou rodar os comandos *docker run* ou rodar o *docker
       * OSB: A flag "-d" é o detached mode, quando o container inicia neste modo ele libera o terminal enquanto o processo fica rodando em background.
      
     O docker-compose.yml contém os dois conteiners configurados dentro dele.
-    Após a execução dessas desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
+    Após a execução desses comandos o ambiente estará de pé, a primeira execução pode levar em torno de 2-3 minutos para ficar tudo no ar, isso por conta da carga inicial de dados no MongoDB.
