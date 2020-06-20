@@ -23,8 +23,8 @@ def verify_data():
     breeds_list = []
 
     if data.count() == 0:
-        logging_cats.logging_cats(1, "Collection vazia")
-        logging_cats.logging_cats(1, "Requisitando dados")
+        logging_cats.logging_cats(1, "Collection vazia.")
+        logging_cats.logging_cats(1, "Requisitando dados.")
         req = requests.get(config.API + "breeds")
 
         temperament_list = []
@@ -35,14 +35,14 @@ def verify_data():
             # Por conta desta parte pode levar cerca de 3 minutos a primeira execução
             cont = 0
             images = []
-            logging_cats.logging_cats(1, "Pegando imagens")
+            logging_cats.logging_cats(1, "Pegando imagens.")
             while cont < 3:
                 img = requests.get(config.API + "images/search?breed_id=" + r['id'].lower())
                 img_json = img.json()
                 images.append(img_json[0]['url'])
                 cont += 1
 
-            logging_cats.logging_cats(1, "Carregamento de imagens concluída")
+            logging_cats.logging_cats(1, "Carregamento de imagens concluída.")
 
             temperament_list = r['temperament'].lower().split(", ")
             breed = {
@@ -55,12 +55,12 @@ def verify_data():
             }
             breeds_list.append(breed)
         logging_cats.logging_cats(1, "Dados solicitados com sucesso!")
-        logging_cats.logging_cats(1, "Inserindo no banco")
+        logging_cats.logging_cats(1, "Inserindo no banco.")
         breeds_col.insert_many(breeds_list)
         logging_cats.logging_cats(1, "Inserido com sucesso!")
         return
-    logging_cats.logging_cats(1, "Database já existe")
-    logging_cats.logging_cats(1, "Collection já existe")
+    logging_cats.logging_cats(1, "Database já existe.")
+    logging_cats.logging_cats(1, "Collection já existe.")
     return
 
 class HelloHandler(DefaultHandler):
@@ -74,6 +74,8 @@ class BreedsHandler(DefaultHandler):
 
         # Se não existir um id_name ele traz todas as informações do banco
         if id_name_low == "":
+            logging_cats.logging_cats(1, "Sem nome de raça.")
+            logging_cats.logging_cats(1, "Procurando todas as raças.")
             # Procura todas as raças
             datas = breeds_col.find({}, {'_id': False})
             for data in datas:
@@ -81,11 +83,14 @@ class BreedsHandler(DefaultHandler):
             
             # Caso não exista gatos no banco de dados
             if breeds_list == []:
+                logging_cats.logging_cats(2, "Não existem gatos.")
                 info = {
                     "msg": "Não existem gatos."
                 }
                 breeds_list.append(info)
         else:
+            logging_cats.logging_cats(1, "Nome de raça encontrado.")
+            logging_cats.logging_cats(1, "Procurando apenas a raça.")
             # Procura apenas 1 raça
             datas = breeds_col.find({'id_name': id_name_low}, {'_id': False})
             for data in datas:
@@ -93,6 +98,7 @@ class BreedsHandler(DefaultHandler):
 
             # Caso não ache gatos da raça passada
             if breeds_list == []:
+                logging_cats.logging_cats(2, "Não existe essa raça de gato.")
                 info = {
                     "msg": "Não existe essa raça de gato."
                 }
@@ -108,14 +114,16 @@ class BreedsOriginHandler(DefaultHandler):
 
         # Verifica se tem um valor dentro de origem_name_low
         if origem_name_low == "":
-            print("[ERROR] - Argumento de origem faltando.")
+            logging_cats.logging_cats(2, "Coloque uma origem.")
             error = {
-                "error_msg": "Coloque uma origem!"
+                "error_msg": "Coloque uma origem."
             }
             breeds_list.append(error)
             self.ResponseWithJson(0, breeds_list)
             return
         
+        logging_cats.logging_cats(1, "Origem encontrada.")
+        logging_cats.logging_cats(1, "Procurando gatos desta origem.")
         # Traz apenas os gatos da origem passada
         datas = breeds_col.find({'origin': origem_name_low}, {'_id': False})
         for data in datas:
@@ -123,6 +131,7 @@ class BreedsOriginHandler(DefaultHandler):
 
         # Caso não encontre gatos com a origem passada
         if breeds_list == []:
+            logging_cats.logging_cats(2, "Não foi encontrado gatos com essa origem.")
             info = {
                 "msg": "Não foi encontrado gatos com essa origem."
             }
@@ -138,14 +147,16 @@ class BreedsTemperamentHandler(DefaultHandler):
 
         # Verifica se tem valor dentro de temperament_low
         if temperament_low == "":
-            print("[ERROR] - Argumento de temperamento faltando.")
+            logging_cats.logging_cats(2, "Coloque um temperamento.")
             error = {
-                "error_msg": "Coloque um temperamento!"
+                "error_msg": "Coloque um temperamento."
             }
             breeds_list.append(error)
             self.ResponseWithJson(0, breeds_list)
             return
         
+        logging_cats.logging_cats(1, "Temperamento encontrado.")
+        logging_cats.logging_cats(1, "Procurando gatos deste temperamento.")
         # Traz todos os dados e procura dentro do array os temperamentos equivalentes
         datas = breeds_col.find({}, {'_id': False})
         for data in datas:
@@ -155,6 +166,7 @@ class BreedsTemperamentHandler(DefaultHandler):
         
         # Caso não encontre o temperamento passado
         if breeds_list == []:
+            logging_cats.logging_cats(2, "Não foi encontrado gatos com esse temperamento.")
             info = {
                 "msg": "Não foi encontrado gatos com esse temperamento."
             }
@@ -169,14 +181,15 @@ class CatsImagesHandler(DefaultHandler):
         category_id_low = category_id.lower()
 
         if category_id_low == "":
-            print("[ERROR] - Argumento de category_id faltando.")
+            logging_cats.logging_cats(2, "Coloque uma categoria.")
             error = {
-                "error_msg": "Coloque uma categoria!"
+                "error_msg": "Coloque uma categoria."
             }
 
             self.ResponseWithJson(0, error)
             return
 
+        logging_cats.logging_cats(1, "Requisitando imagem da api.")
         # Requisição feita na api cat
         img = requests.get(config.API + "images/search?&category_ids=" + category_id_low)
         img_json = img.json()
@@ -187,6 +200,7 @@ class CatsImagesHandler(DefaultHandler):
             "url": img_json[0]['url']
         }
 
+        logging_cats.logging_cats(1, "Inserindo no banco.")
         # Momento da inserção
         categories_image_col.insert_one(categories_image)
 
