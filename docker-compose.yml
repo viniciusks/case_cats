@@ -1,0 +1,12 @@
+mongo:
+    image: mongo
+    restart: always
+    ports:
+        - 27017:27017
+
+case_cats_api:
+    image: viniciusks/case_cats:1.0.0
+    ports:
+        - 8888:8888
+    links:
+        - mongo
