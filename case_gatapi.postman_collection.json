@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "836bba85-dbf9-4411-a482-77478fb10755",
+		"name": "case_gatapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Insert One Image Cat Hat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/cats-category-images/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"cats-category-images",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert One Image Cat Sunglasses",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/cats-category-images/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"cats-category-images",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Cats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/breeds/abys",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"breeds",
+						"abys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List One Cat",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/breeds/abys",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"breeds",
+						"abys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Cat by Origin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/breeds-origin/Russia",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"breeds-origin",
+						"Russia"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Cat by Temperament",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/breeds-temperament/sweet",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"breeds-temperament",
+						"sweet"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
